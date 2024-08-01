@@ -6,10 +6,16 @@
     "start": "node app.js",
     "dev": "nodemon app.js"
   },
-  "keywords": [],
+  "keywords": [
+    "automation",
+    "marketing",
+    "email",
+    "campaign",
+    "saas"
+  ],
   "author": "Douglas Vinícios dos Santos Queiroz",
-  "license": "",
-  "description": "",
+  "license": "None",
+  "description": "CampaignCraft é uma plataforma SaaS para automação de marketing e gerenciamento de campanhas de e-mail. Com integração ao Supabase para armazenamento de dados e um sistema de templates de e-mail, você pode facilmente criar e gerenciar campanhas e automatizar comunicações com seus contatos.",
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",
     "body-parser": "^1.20.2",
