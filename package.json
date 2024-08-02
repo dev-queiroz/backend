@@ -20,5 +20,11 @@
     "url": "https://github.com/dev-queiroz/CampaignCraft/issues"
   },
   "homepage": "https://github.com/dev-queiroz/CampaignCraft#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "nodemailer": "^6.9.14"
+  }
 }
