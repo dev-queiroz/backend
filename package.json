@@ -1,0 +1,24 @@
+{
+  "name": "campaigncraft",
+  "version": "0.0.9",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dev-queiroz/CampaignCraft.git"
+  },
+  "keywords": [
+    "email",
+    "automatico",
+    "SaaS"
+  ],
+  "author": "Douglas Vinícios dos Santos Queiroz",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/dev-queiroz/CampaignCraft/issues"
+  },
+  "homepage": "https://github.com/dev-queiroz/CampaignCraft#readme",
+  "description": ""
+}
