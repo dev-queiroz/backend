@@ -18,7 +18,7 @@ app.post('/send-email', async (req, res) => {
 });
 
 app.get('/send-email', async (req, res) => {
-  console.log("Servidor rodando à todo vapor!");
+  res.console.log("Servidor rodando à todo vapor!");
 });
 
 const PORT = process.env.PORT || 3000;
