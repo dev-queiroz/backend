@@ -1,4 +1,3 @@
-// controllers/reportController.js
 const { createReport, getReports } = require('../models/reportModel');
 
 exports.createReport = async (req, res) => {

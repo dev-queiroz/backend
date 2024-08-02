@@ -1,4 +1,3 @@
-// controllers/emailController.js
 const { createEmail, getScheduledEmails, updateEmailStatus } = require('../models/emailModel');
 
 exports.createEmail = async (req, res) => {

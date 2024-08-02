@@ -1,4 +1,3 @@
-// controllers/contactController.js
 const { createContact, getContacts, updateContact, deleteContact } = require('../models/contactModel');
 
 exports.createContact = async (req, res) => {
