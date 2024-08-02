@@ -1,4 +1,4 @@
-const { supabase } = require("../app");
+const supabase = require("../services/supabase");
 
 exports.createEmail = async (
   user_id,
@@ -15,22 +15,9 @@ exports.createEmail = async (
   return data[0];
 };
 
-exports.getScheduledEmails = async () => {
-  const { data, error } = await supabase
-    .from("emails")
-    .select("*")
-    .eq("status", "scheduled");
+exports.getEmails = async () => {
+  const { data, error } = await supabase.from("emails").select("*");
 
   if (error) throw error;
   return data;
-};
-
-exports.updateEmailStatus = async (id, status) => {
-  const { data, error } = await supabase
-    .from("emails")
-    .update({ status })
-    .eq("id", id);
-
-  if (error) throw error;
-  return data[0];
 };

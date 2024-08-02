@@ -1,4 +1,4 @@
-const { supabase } = require("../app");
+const supabase = require("../services/supabase");
 
 exports.createReport = async (
   email_id,

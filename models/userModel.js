@@ -1,4 +1,4 @@
-const { supabase } = require("../app");
+const supabase = require("../services/supabase");
 
 exports.createUser = async (email, password_hash) => {
   const { data, error } = await supabase

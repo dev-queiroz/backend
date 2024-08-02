@@ -1,4 +1,4 @@
-const { supabase } = require("../app");
+const supabase = require("../services/supabase");
 
 exports.createContact = async (user_id, name, email, tags) => {
   const { data, error } = await supabase

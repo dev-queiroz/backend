@@ -23,8 +23,12 @@
   "description": "Um SaaS para automação de e-mails que permite o envio automático de mensagens.",
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.14"
   }
 }
