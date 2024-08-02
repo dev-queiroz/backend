@@ -20,7 +20,7 @@
     "url": "https://github.com/dev-queiroz/CampaignCraft/issues"
   },
   "homepage": "https://github.com/dev-queiroz/CampaignCraft#readme",
-  "description": "",
+  "description": "Um SaaS para automação de e-mails que permite o envio automático de mensagens.",
   "dependencies": {
     "@supabase/supabase-js": "^2.45.0",
     "dotenv": "^16.4.5",
