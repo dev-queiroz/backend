@@ -25,7 +25,7 @@ app.use('/api', routes);
 
 // Configurar a rota principal
 app.get('/', (req, res) => {
-    res.send('Bem-vindo ao SaaS de Automação de Marketing e E-mails!');
+    res.send('Bem-vindo ao SaaS de Automação de E-mails!');
 });
 
 // Configurar o servidor para escutar na porta especificada
