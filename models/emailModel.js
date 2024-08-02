@@ -1,54 +1,31 @@
-const { createClient } = require('@supabase/supabase-js');
+// models/emailModel.js
+const { supabase } = require('../app');
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-const EmailTemplateModel = {
-  async create(user_id, name, subject, body) {
+// Função para criar uma nova campanha de e-mail
+exports.createEmail = async (user_id, subject, body, template_id, scheduled_at) => {
     const { data, error } = await supabase
-      .from('email_templates')
-      .insert([{ user_id, name, subject, body }]);
+        .from('emails')
+        .insert([{ user_id, subject, body, template_id, scheduled_at }]);
     if (error) throw new Error(error.message);
     return data;
-  },
-
-  async findById(id) {
-    const { data, error } = await supabase
-      .from('email_templates')
-      .select('*')
-      .eq('id', id)
-      .single();
-    if (error) throw new Error(error.message);
-    return data;
-  },
-
-  async findByUserId(user_id) {
-    const { data, error } = await supabase
-      .from('email_templates')
-      .select('*')
-      .eq('user_id', user_id);
-    if (error) throw new Error(error.message);
-    return data;
-  },
-
-  async update(id, updates) {
-    const { data, error } = await supabase
-      .from('email_templates')
-      .update(updates)
-      .eq('id', id);
-    if (error) throw new Error(error.message);
-    return data;
-  },
-
-  async delete(id) {
-    const { data, error } = await supabase
-      .from('email_templates')
-      .delete()
-      .eq('id', id);
-    if (error) throw new Error(error.message);
-    return data;
-  }
 };
 
-module.exports = EmailTemplateModel;
+// Função para encontrar e-mails agendados
+exports.getScheduledEmails = async () => {
+    const { data, error } = await supabase
+        .from('emails')
+        .select('*')
+        .eq('sent', false);
+    if (error) throw new Error(error.message);
+    return data;
+};
+
+// Função para atualizar o status do e-mail
+exports.updateEmailStatus = async (id, status) => {
+    const { data, error } = await supabase
+        .from('emails')
+        .update({ sent: status })
+        .eq('id', id);
+    if (error) throw new Error(error.message);
+    return data;
+};
