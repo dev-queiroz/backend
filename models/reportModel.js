@@ -1,63 +1,21 @@
-const { createClient } = require('@supabase/supabase-js');
+// models/reportModel.js
+const { supabase } = require('../app');
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-const ReportModel = {
-  async create(user_id, campaign_id, content) {
+// Função para criar um relatório de e-mail
+exports.createReport = async (email_id, status, recipient_email, opened_at, clicked_at) => {
     const { data, error } = await supabase
-      .from('reports')
-      .insert([{ user_id, campaign_id, content }]);
+        .from('reports')
+        .insert([{ email_id, status, recipient_email, opened_at, clicked_at }]);
     if (error) throw new Error(error.message);
     return data;
-  },
-
-  async findById(id) {
-    const { data, error } = await supabase
-      .from('reports')
-      .select('*')
-      .eq('id', id)
-      .single();
-    if (error) throw new Error(error.message);
-    return data;
-  },
-
-  async findByUserId(user_id) {
-    const { data, error } = await supabase
-      .from('reports')
-      .select('*')
-      .eq('user_id', user_id);
-    if (error) throw new Error(error.message);
-    return data;
-  },
-
-  async findByCampaignId(campaign_id) {
-    const { data, error } = await supabase
-      .from('reports')
-      .select('*')
-      .eq('campaign_id', campaign_id);
-    if (error) throw new Error(error.message);
-    return data;
-  },
-
-  async update(id, updates) {
-    const { data, error } = await supabase
-      .from('reports')
-      .update(updates)
-      .eq('id', id);
-    if (error) throw new Error(error.message);
-    return data;
-  },
-
-  async delete(id) {
-    const { data, error } = await supabase
-      .from('reports')
-      .delete()
-      .eq('id', id);
-    if (error) throw new Error(error.message);
-    return data;
-  }
 };
 
-module.exports = ReportModel;
+// Função para listar relatórios de e-mails
+exports.getReports = async (email_id) => {
+    const { data, error } = await supabase
+        .from('reports')
+        .select('*')
+        .eq('email_id', email_id);
+    if (error) throw new Error(error.message);
+    return data;
+};
