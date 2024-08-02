@@ -1,65 +1,60 @@
-const { createClient } = require('@supabase/supabase-js');
+// controllers/emailController.js
+const nodemailer = require('nodemailer');
+const { supabase } = require('../app');
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Configuração do transportador de e-mail
+const transporter = nodemailer.createTransport({
+    service: 'SendGrid', // ou outro serviço de e-mail
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+});
 
-exports.createTemplate = async (req, res) => {
-  const { user_id, name, subject, body } = req.body;
+// Função para criar uma nova campanha de e-mail
+exports.createCampaign = async (req, res) => {
+    const { user_id, subject, body, template_id, scheduled_at } = req.body;
 
-  const { data, error } = await supabase
-    .from('email_templates')
-    .insert([{ user_id, name, subject, body }]);
+    const { data, error } = await supabase
+        .from('emails')
+        .insert([{ user_id, subject, body, template_id, scheduled_at }]);
 
-  if (error) {
-    return res.status(400).json({ error: error.message });
-  }
-
-  res.status(201).json(data);
+    if (error) return res.status(400).json({ error: error.message });
+    
+    res.status(201).json({ message: 'Campanha de e-mail criada com sucesso!' });
 };
 
-exports.getTemplates = async (req, res) => {
-  const { user_id } = req.query;
+// Função para enviar e-mails agendados
+exports.sendScheduledEmails = async () => {
+    const now = new Date().toISOString();
 
-  const { data, error } = await supabase
-    .from('email_templates')
-    .select('*')
-    .eq('user_id', user_id);
+    const { data, error } = await supabase
+        .from('emails')
+        .select('*')
+        .lt('scheduled_at', now)
+        .eq('sent', false);
 
-  if (error) {
-    return res.status(400).json({ error: error.message });
-  }
+    if (error) return console.error('Erro ao buscar e-mails agendados:', error.message);
 
-  res.json(data);
-};
+    data.forEach(async (email) => {
+        // Enviar e-mail
+        const mailOptions = {
+            from: 'your-email@example.com',
+            to: email.recipient_email,
+            subject: email.subject,
+            html: email.body
+        };
 
-exports.updateTemplate = async (req, res) => {
-  const { id } = req.params;
-  const { name, subject, body } = req.body;
+        try {
+            await transporter.sendMail(mailOptions);
 
-  const { data, error } = await supabase
-    .from('email_templates')
-    .update({ name, subject, body })
-    .eq('id', id);
-
-  if (error) {
-    return res.status(400).json({ error: error.message });
-  }
-
-  res.json(data);
-};
-
-exports.deleteTemplate = async (req, res) => {
-  const { id } = req.params;
-
-  const { data, error } = await supabase
-    .from('email_templates')
-    .delete()
-    .eq('id', id);
-
-  if (error) {
-    return res.status(400).json({ error: error.message });
-  }
-
-  res.json({ message: 'Template deleted successfully' });
+            // Atualizar status como enviado
+            await supabase
+                .from('emails')
+                .update({ sent: true })
+                .eq('id', email.id);
+        } catch (err) {
+            console.error('Erro ao enviar e-mail:', err.message);
+        }
+    });
 };
