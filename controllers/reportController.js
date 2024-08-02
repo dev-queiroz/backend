@@ -1,16 +1,24 @@
 // controllers/reportController.js
-const { supabase } = require('../app');
+const { createReport, getReports } = require('../models/reportModel');
 
-// Função para listar relatórios de e-mails
+exports.createReport = async (req, res) => {
+    const { email_id, status, recipient_email, opened_at, clicked_at } = req.body;
+
+    try {
+        const report = await createReport(email_id, status, recipient_email, opened_at, clicked_at);
+        res.status(201).json({ report });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
 exports.getReports = async (req, res) => {
     const { email_id } = req.query;
 
-    const { data, error } = await supabase
-        .from('reports')
-        .select('*')
-        .eq('email_id', email_id);
-
-    if (error) return res.status(400).json({ error: error.message });
-    
-    res.json(data);
+    try {
+        const reports = await getReports(email_id);
+        res.json({ reports });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
 };
