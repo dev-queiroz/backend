@@ -1,65 +1,58 @@
-const { createClient } = require('@supabase/supabase-js');
+// controllers/contactController.js
+const { supabase } = require('../app');
 
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseAnonKey = process.env.SUPABASE_ANON_KEY;
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
+// Função para adicionar um novo contato
 exports.createContact = async (req, res) => {
-  const { user_id, email, first_name, last_name } = req.body;
+    const { user_id, name, email, tags } = req.body;
 
-  const { data, error } = await supabase
-    .from('contacts')
-    .insert([{ user_id, email, first_name, last_name }]);
+    const { data, error } = await supabase
+        .from('contacts')
+        .insert([{ user_id, name, email, tags }]);
 
-  if (error) {
-    return res.status(400).json({ error: error.message });
-  }
-
-  res.status(201).json(data);
+    if (error) return res.status(400).json({ error: error.message });
+    
+    res.status(201).json({ message: 'Contato adicionado com sucesso!' });
 };
 
+// Função para listar contatos
 exports.getContacts = async (req, res) => {
-  const { user_id } = req.query;
+    const { user_id } = req.query;
 
-  const { data, error } = await supabase
-    .from('contacts')
-    .select('*')
-    .eq('user_id', user_id);
+    const { data, error } = await supabase
+        .from('contacts')
+        .select('*')
+        .eq('user_id', user_id);
 
-  if (error) {
-    return res.status(400).json({ error: error.message });
-  }
-
-  res.json(data);
+    if (error) return res.status(400).json({ error: error.message });
+    
+    res.json(data);
 };
 
+// Função para atualizar um contato
 exports.updateContact = async (req, res) => {
-  const { id } = req.params;
-  const { email, first_name, last_name } = req.body;
+    const { id } = req.params;
+    const { name, email, tags } = req.body;
 
-  const { data, error } = await supabase
-    .from('contacts')
-    .update({ email, first_name, last_name })
-    .eq('id', id);
+    const { data, error } = await supabase
+        .from('contacts')
+        .update({ name, email, tags })
+        .eq('id', id);
 
-  if (error) {
-    return res.status(400).json({ error: error.message });
-  }
-
-  res.json(data);
+    if (error) return res.status(400).json({ error: error.message });
+    
+    res.json({ message: 'Contato atualizado com sucesso!' });
 };
 
+// Função para excluir um contato
 exports.deleteContact = async (req, res) => {
-  const { id } = req.params;
+    const { id } = req.params;
 
-  const { data, error } = await supabase
-    .from('contacts')
-    .delete()
-    .eq('id', id);
+    const { data, error } = await supabase
+        .from('contacts')
+        .delete()
+        .eq('id', id);
 
-  if (error) {
-    return res.status(400).json({ error: error.message });
-  }
-
-  res.json({ message: 'Contact deleted successfully' });
+    if (error) return res.status(400).json({ error: error.message });
+    
+    res.json({ message: 'Contato excluído com sucesso!' });
 };
