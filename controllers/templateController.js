@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { getSupabaseClient } = require("../db/database");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");

@@ -1,8 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const authController = require('../controllers/authController');
 const userController = require("../controllers/userController");
 const templateController = require("../controllers/templateController");
 const emailController = require("../controllers/broadcastController");
+
+// Rota de login
+router.post('/login', authController.login);
 
 // Rotas usuários
 router.post("/addUser", userController.addUser);

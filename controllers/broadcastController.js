@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { getSupabaseClient } = require("../db/database");
 const nodemailer = require("nodemailer");
 const { EMAIL_USER, EMAIL_PASS } = process.env;
