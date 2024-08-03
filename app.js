@@ -13,6 +13,11 @@ app.use(express.json());
 
 app.use("/api/mail", mailRouter);
 
+// Rota para manter site ativo
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
